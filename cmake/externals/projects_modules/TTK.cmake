@@ -51,8 +51,10 @@ EP_SetDirectories(${ep}
 ## Set up versioning control.
 ## #############################################################################
 
-set(git_url ${GITHUB_PREFIX}Inria-Asclepios/TTK-Public.git)
-set(git_tag music)
+set(tag "music")
+if (NOT DEFINED ${ep}_SOURCE_DIR)
+    set(location GIT_REPOSITORY "${GITHUB_PREFIX}Inria-Asclepios/TTK-Public.git" GIT_TAG ${tag})
+endif()
 
 ## #############################################################################
 ## Add specific cmake arguments for configuration step of the project
@@ -77,13 +79,20 @@ set(cmake_args
   )
 
 ## #############################################################################
+## Check if patch has to be applied
+## #############################################################################
+
+ep_GeneratePatchCommand(TTK TTK_PATCH_COMMAND TTK_Bruker_Minc.patch)
+
+## #############################################################################
 ## Add external-project
 ## #############################################################################
 
 ExternalProject_Add(${ep}
   ${ep_dirs}
-  GIT_REPOSITORY ${git_url}
-  GIT_TAG ${git_tag}
+  ${location}
+  UPDATE_COMMAND ""
+  PATCH_COMMAND ${TTK_PATCH_COMMAND}
   CMAKE_GENERATOR ${gen}
   CMAKE_ARGS ${cmake_args}
   DEPENDS ${${ep}_dependencies}

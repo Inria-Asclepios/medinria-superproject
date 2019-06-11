@@ -50,7 +50,7 @@ EP_SetDirectories(${ep}
 ## #############################################################################
 
 set(git_url ${GITHUB_PREFIX}Inria-Asclepios/RPI.git)
-set(git_tag music)
+set(git_tag master)
 
 
 ## #############################################################################

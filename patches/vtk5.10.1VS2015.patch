@@ -1,5 +1,62 @@
+From 5827f3758e67fc73f293d047d8c65593d96091d9 Mon Sep 17 00:00:00 2001
+From: Mathilde Merle <mathilde.merle@ihu-liryc.fr>
+Date: Wed, 24 Apr 2019 14:52:49 +0200
+Subject: [PATCH] vtk5.10.1VS2015
+
+---
+ CMake/vtkCompilerExtras.cmake                 |   12 +-
+ Charts/vtkControlPointsItem.cxx               |    1 +
+ Charts/vtkPiecewisePointHandleItem.cxx        |    2 +
+ Common/vtkOStreamWrapper.cxx                  |    5 +-
+ Hybrid/vtk3DSImporter.cxx                     |    8 +-
+ Hybrid/vtkVectorText.cxx                      | 1512 ++++++++---------
+ IO/vtkEnSightGoldBinaryReader.cxx             |   22 +-
+ IO/vtkEnSightReader.cxx                       |   10 +-
+ IO/vtkXMLUnstructuredDataReader.cxx           |    4 +-
+ Infovis/vtkAdjacencyMatrixToEdgeTable.cxx     |    1 +
+ Infovis/vtkConvexHull2D.cxx                   |    2 +
+ Infovis/vtkNormalizeMatrixVectors.cxx         |    1 +
+ Infovis/vtkPairwiseExtractHistogram2D.cxx     |    1 +
+ Rendering/vtkInteractorStyleImage.cxx         |   11 +-
+ Rendering/vtkXOpenGLRenderWindow.cxx          |    2 +-
+ Utilities/vtkhdf5/ConfigureChecks.cmake       |    2 +
+ Utilities/vtkhdf5/Resources/HDF5Tests.c       |    2 +-
+ Utilities/vtklibxml2/config_cmake.h.in        |    4 +-
+ Utilities/vtktiff/CMakeLists.txt              |    1 +
+ Utilities/vtktiff/tif_config.h.in             |   12 +-
+ .../vtkParallelCoordinatesRepresentation.cxx  |    1 +
+ 21 files changed, 812 insertions(+), 804 deletions(-)
+
+diff --git a/CMake/vtkCompilerExtras.cmake b/CMake/vtkCompilerExtras.cmake
+index 6811ac2597..4582f28763 100644
+--- a/CMake/vtkCompilerExtras.cmake
++++ b/CMake/vtkCompilerExtras.cmake
+@@ -22,22 +22,12 @@ if(CMAKE_COMPILER_IS_GNUCXX)
+     #  "-Wl,--fatal-warnings -Wl,--no-undefined -lc ${CMAKE_SHARED_LINKER_FLAGS}")
+   endif()
+ 
+-  # Now check if we can use visibility to selectively export symbols
+-  exec_program(${CMAKE_C_COMPILER} ARGS --version OUTPUT_VARIABLE
+-    _gcc_version_info)
+-  string (REGEX MATCH "[345]\\.[0-9]\\.[0-9]" 
+-    _gcc_version "${_gcc_version_info}")
+-  if(NOT _gcc_version)
+-    string (REGEX REPLACE ".*\\(GCC\\).* ([34]\\.[0-9]) .*" "\\1.0" 
+-      _gcc_version "${_gcc_version_info}")
+-  endif()
+-  
+   # GCC visibility support, on by default and in testing.
+   check_cxx_compiler_flag(-fvisibility=hidden HAVE_GCC_VISIBILITY)
+   option(VTK_USE_GCC_VISIBILITY "Use GCC visibility support if available." ON)
+   mark_as_advanced(VTK_USE_GCC_VISIBILITY)
+ 
+-  if(${_gcc_version} VERSION_GREATER 4.2.0 AND BUILD_SHARED_LIBS
++  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.2.0 AND BUILD_SHARED_LIBS
+     AND HAVE_GCC_VISIBILITY AND VTK_USE_GCC_VISIBILITY
+     AND NOT MINGW AND NOT CYGWIN)
+     # Should only be set if GCC is newer than 4.2.0
 diff --git a/Charts/vtkControlPointsItem.cxx b/Charts/vtkControlPointsItem.cxx
-index 7699abf..399f40d 100644
+index 7699abf633..399f40da1e 100644
 --- a/Charts/vtkControlPointsItem.cxx
 +++ b/Charts/vtkControlPointsItem.cxx
 @@ -32,6 +32,7 @@
@@ -11,7 +68,7 @@ index 7699abf..399f40d 100644
  //-----------------------------------------------------------------------------
  vtkControlPointsItem::vtkControlPointsItem()
 diff --git a/Charts/vtkPiecewisePointHandleItem.cxx b/Charts/vtkPiecewisePointHandleItem.cxx
-index 7dfa95c..63287cf 100644
+index 7dfa95c610..63287cf483 100644
 --- a/Charts/vtkPiecewisePointHandleItem.cxx
 +++ b/Charts/vtkPiecewisePointHandleItem.cxx
 @@ -29,6 +29,8 @@
@@ -24,7 +81,7 @@ index 7dfa95c..63287cf 100644
    {
    enSharpNess=0,
 diff --git a/Common/vtkOStreamWrapper.cxx b/Common/vtkOStreamWrapper.cxx
-index ff91c95..0df956e 100644
+index ff91c95659..0df956e8f1 100644
 --- a/Common/vtkOStreamWrapper.cxx
 +++ b/Common/vtkOStreamWrapper.cxx
 @@ -57,7 +57,10 @@ VTKOSTREAM_OPERATOR(vtkObjectBase&);
@@ -40,7 +97,7 @@ index ff91c95..0df956e 100644
  VTKOSTREAM_OPERATOR(void*);
  VTKOSTREAM_OPERATOR(char);
 diff --git a/Hybrid/vtk3DSImporter.cxx b/Hybrid/vtk3DSImporter.cxx
-index bfa0996..efcf3af 100644
+index bfa099613f..efcf3af366 100644
 --- a/Hybrid/vtk3DSImporter.cxx
 +++ b/Hybrid/vtk3DSImporter.cxx
 @@ -39,11 +39,11 @@ vtkStandardNewMacro(vtk3DSImporter);
@@ -60,7 +117,7 @@ index bfa0996..efcf3af 100644
  static vtk3DSVector target     = {0.0, 0.0, 0.0};
  static float  hotspot = -1;
 diff --git a/Hybrid/vtkVectorText.cxx b/Hybrid/vtkVectorText.cxx
-index 95f8b3b..809ef49 100644
+index 95f8b3b23f..809ef49c7e 100644
 --- a/Hybrid/vtkVectorText.cxx
 +++ b/Hybrid/vtkVectorText.cxx
 @@ -20,10 +20,9 @@
@@ -2303,7 +2360,7 @@ index 95f8b3b..809ef49 100644
 +  delete [] this->Text;
  }
 diff --git a/IO/vtkEnSightGoldBinaryReader.cxx b/IO/vtkEnSightGoldBinaryReader.cxx
-index a3ca6c5..4b91b4f 100644
+index a3ca6c51d4..4b91b4ff1a 100644
 --- a/IO/vtkEnSightGoldBinaryReader.cxx
 +++ b/IO/vtkEnSightGoldBinaryReader.cxx
 @@ -3922,7 +3922,7 @@ int vtkEnSightGoldBinaryReader::CreateImageDataOutput(
@@ -2403,7 +2460,7 @@ index a3ca6c5..4b91b4f 100644
        vtkErrorMacro("Read (fortran) failed.");
        return 0;
 diff --git a/IO/vtkEnSightReader.cxx b/IO/vtkEnSightReader.cxx
-index 68a9b8f..a8d33db 100644
+index 68a9b8fb36..a8d33db369 100644
 --- a/IO/vtkEnSightReader.cxx
 +++ b/IO/vtkEnSightReader.cxx
 @@ -1574,11 +1574,12 @@ int vtkEnSightReader::ReadVariableFiles(vtkMultiBlockDataSet *output)
@@ -2437,7 +2494,7 @@ index 68a9b8f..a8d33db 100644
              }
            }
 diff --git a/IO/vtkXMLUnstructuredDataReader.cxx b/IO/vtkXMLUnstructuredDataReader.cxx
-index 01e89dc..92244e1 100644
+index 01e89dc7b3..92244e130a 100644
 --- a/IO/vtkXMLUnstructuredDataReader.cxx
 +++ b/IO/vtkXMLUnstructuredDataReader.cxx
 @@ -552,7 +552,7 @@ int vtkXMLUnstructuredDataReader::ReadCellArray(vtkIdType numberOfCells,
@@ -2459,7 +2516,7 @@ index 01e89dc..92244e1 100644
    // Set range of progress for offsets array.
    this->SetProgressRange(progressRange, 0, fractions);
 diff --git a/Infovis/vtkAdjacencyMatrixToEdgeTable.cxx b/Infovis/vtkAdjacencyMatrixToEdgeTable.cxx
-index 0cc4f0a..d3b717f 100644
+index 0cc4f0a0bb..d3b717f455 100644
 --- a/Infovis/vtkAdjacencyMatrixToEdgeTable.cxx
 +++ b/Infovis/vtkAdjacencyMatrixToEdgeTable.cxx
 @@ -33,6 +33,7 @@
@@ -2471,7 +2528,7 @@ index 0cc4f0a..d3b717f 100644
  // ----------------------------------------------------------------------
  
 diff --git a/Infovis/vtkConvexHull2D.cxx b/Infovis/vtkConvexHull2D.cxx
-index beb655e..0103c3b 100644
+index beb655e042..0103c3bec6 100644
 --- a/Infovis/vtkConvexHull2D.cxx
 +++ b/Infovis/vtkConvexHull2D.cxx
 @@ -29,6 +29,8 @@
@@ -2484,7 +2541,7 @@ index beb655e..0103c3b 100644
  
  //-----------------------------------------------------------------------------
 diff --git a/Infovis/vtkNormalizeMatrixVectors.cxx b/Infovis/vtkNormalizeMatrixVectors.cxx
-index 36edbe9..c56ca83 100644
+index 36edbe920b..c56ca832ae 100644
 --- a/Infovis/vtkNormalizeMatrixVectors.cxx
 +++ b/Infovis/vtkNormalizeMatrixVectors.cxx
 @@ -27,6 +27,7 @@
@@ -2496,7 +2553,7 @@ index 36edbe9..c56ca83 100644
  ///////////////////////////////////////////////////////////////////////////////
  // vtkNormalizeMatrixVectors
 diff --git a/Infovis/vtkPairwiseExtractHistogram2D.cxx b/Infovis/vtkPairwiseExtractHistogram2D.cxx
-index db309c1..652e2d7 100644
+index db309c1b86..652e2d70ab 100644
 --- a/Infovis/vtkPairwiseExtractHistogram2D.cxx
 +++ b/Infovis/vtkPairwiseExtractHistogram2D.cxx
 @@ -44,6 +44,7 @@ PURPOSE.  See the above copyright notice for more information.
@@ -2508,7 +2565,7 @@ index db309c1..652e2d7 100644
  vtkStandardNewMacro(vtkPairwiseExtractHistogram2D);
  //------------------------------------------------------------------------------
 diff --git a/Rendering/vtkInteractorStyleImage.cxx b/Rendering/vtkInteractorStyleImage.cxx
-index b7bcb27..7f0b079 100644
+index b7bcb2787e..7f0b07906d 100644
 --- a/Rendering/vtkInteractorStyleImage.cxx
 +++ b/Rendering/vtkInteractorStyleImage.cxx
 @@ -482,7 +482,12 @@ void vtkInteractorStyleImage::WindowLevel()
@@ -2537,7 +2594,7 @@ index b7bcb27..7f0b079 100644
  
  //----------------------------------------------------------------------------
 diff --git a/Rendering/vtkXOpenGLRenderWindow.cxx b/Rendering/vtkXOpenGLRenderWindow.cxx
-index d415fae..d56d678 100644
+index d415fae849..d56d678c23 100644
 --- a/Rendering/vtkXOpenGLRenderWindow.cxx
 +++ b/Rendering/vtkXOpenGLRenderWindow.cxx
 @@ -27,7 +27,7 @@
@@ -2550,7 +2607,7 @@ index d415fae..d56d678 100644
  
  #include "vtkgl.h"
 diff --git a/Utilities/vtkhdf5/ConfigureChecks.cmake b/Utilities/vtkhdf5/ConfigureChecks.cmake
-index 66f963a..ea3bde9 100644
+index 66f963a3d2..ea3bde971a 100644
 --- a/Utilities/vtkhdf5/ConfigureChecks.cmake
 +++ b/Utilities/vtkhdf5/ConfigureChecks.cmake
 @@ -484,7 +484,9 @@ ENDMACRO (HDF5_FUNCTION_TEST)
@@ -2564,7 +2621,7 @@ index 66f963a..ea3bde9 100644
  ELSE (WINDOWS)
    FOREACH (test
 diff --git a/Utilities/vtkhdf5/Resources/HDF5Tests.c b/Utilities/vtkhdf5/Resources/HDF5Tests.c
-index 35e7258..3a31575 100644
+index 35e7258ce7..3a31575f99 100644
 --- a/Utilities/vtkhdf5/Resources/HDF5Tests.c
 +++ b/Utilities/vtkhdf5/Resources/HDF5Tests.c
 @@ -255,7 +255,7 @@ SIMPLE_TEST(struct stat sb; sb.st_blocks=0);
@@ -2577,7 +2634,7 @@ index 35e7258..3a31575 100644
    char **currentArg = NULL;
    LL_TYPE x = (LL_TYPE)1048576 * (LL_TYPE)1048576;
 diff --git a/Utilities/vtklibxml2/config_cmake.h.in b/Utilities/vtklibxml2/config_cmake.h.in
-index e0ef110..156ff4c 100644
+index e0ef1103f1..156ff4c337 100644
 --- a/Utilities/vtklibxml2/config_cmake.h.in
 +++ b/Utilities/vtklibxml2/config_cmake.h.in
 @@ -250,7 +250,7 @@
@@ -2598,7 +2655,7 @@ index e0ef110..156ff4c 100644
  # define vsnprintf _vsnprintf
  #endif
 diff --git a/Utilities/vtktiff/CMakeLists.txt b/Utilities/vtktiff/CMakeLists.txt
-index a241e12..3881750 100644
+index a241e128e0..3881750dda 100644
 --- a/Utilities/vtktiff/CMakeLists.txt
 +++ b/Utilities/vtktiff/CMakeLists.txt
 @@ -68,6 +68,7 @@ CHECK_INCLUDE_FILES("inttypes.h" HAVE_INTTYPES_H)
@@ -2610,7 +2667,7 @@ index a241e12..3881750 100644
  CHECK_INCLUDE_FILES("stdlib.h" HAVE_STDLIB_H)
  CHECK_INCLUDE_FILES("string.h" HAVE_STRING_H)
 diff --git a/Utilities/vtktiff/tif_config.h.in b/Utilities/vtktiff/tif_config.h.in
-index eca77f8..4503914 100644
+index eca77f8a43..4503914a60 100644
 --- a/Utilities/vtktiff/tif_config.h.in
 +++ b/Utilities/vtktiff/tif_config.h.in
 @@ -70,6 +70,9 @@
@@ -2641,7 +2698,7 @@ index eca77f8..4503914 100644
  
  /* Define to `long' if <sys/types.h> does not define. */
 diff --git a/Views/vtkParallelCoordinatesRepresentation.cxx b/Views/vtkParallelCoordinatesRepresentation.cxx
-index 9409ce3..c190512 100644
+index 9409ce3622..c190512253 100644
 --- a/Views/vtkParallelCoordinatesRepresentation.cxx
 +++ b/Views/vtkParallelCoordinatesRepresentation.cxx
 @@ -78,6 +78,7 @@ PURPOSE.  See the above copyright notice for more information.
@@ -2652,3 +2709,6 @@ index 9409ce3..c190512 100644
  #include <vector>
  #include <vtksys/ios/sstream>
  
+-- 
+2.17.1
+

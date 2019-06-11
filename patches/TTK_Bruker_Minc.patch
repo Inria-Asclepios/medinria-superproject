@@ -1,0 +1,31 @@
+From fe9fe75463810f70ff810b40350c797395f19eb7 Mon Sep 17 00:00:00 2001
+From: mathildemerle <mathilde.merle@ihu-liryc.fr>
+Date: Mon, 29 Oct 2018 16:34:52 +0100
+Subject: [PATCH] TTK_Bruker_Minc
+
+---
+ CMakeLists.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 23af8ac..c17b8df 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -119,12 +119,14 @@ endif()
+ SET(ITKIO_LIBRARIES
+   ITKIOImageBase
+   ITKIOBMP
++  ITKIOBruker
+   ITKIOLSM
+   ITKIOJPEG
+   ITKIOPNG
+   ITKIOVTK
+   ITKIOGDCM
+   ITKIOGE
++  ITKIOMINC
+   ITKNrrdIO
+   ITKIONRRD
+   ITKIOMeta
+-- 
+2.7.4
+
