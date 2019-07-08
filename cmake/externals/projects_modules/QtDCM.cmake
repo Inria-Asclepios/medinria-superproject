@@ -60,7 +60,7 @@ endif(QT4_FOUND)
 
 set(tag "music")
 if (NOT DEFINED ${ep}_SOURCE_DIR)
-    set(location GIT_REPOSITORY "${GITHUB_PREFIX}medInria/qtdcm.git" GIT_TAG ${tag})
+    set(location GIT_REPOSITORY "${GITHUB_PREFIX}medInria/qtdcm_archived.git" GIT_TAG ${tag})
 endif()
 
 ## #############################################################################
